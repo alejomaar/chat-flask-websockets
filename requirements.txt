@@ -1,6 +1,0 @@
-Flask==1.1.1
-gunicorn
-Flask-SocketIO<=4.6.1
-eventlet
-gevent-websocket
-python-engineio<=3.14.2
