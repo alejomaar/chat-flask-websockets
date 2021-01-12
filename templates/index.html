@@ -3,20 +3,64 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
 	<title>Document</title>
 </head>
 <body>
-	<div id="chat"></div>
-	<input id="chat-input" type="text"> <button onclick="sendMessage()">Send Message</button>
+
+	<div class="message_box" style="display:none">
+		<span class="autor"></span>
+		<span class="message"></span>
+	</div>
+
+	<div class="container">
+		<input type="text" id="user" placeholder="Usuario">
+		<input type="text" id="input_message" placeholder="Mensaje">
+		<button onclick="sendMessage()">Enviar</button>
+		<div class="chat" id="chat">
+
+		</div>
+	</div>
+	
+	<!-- <div id="chat"></div>
+	<input id="chat-input" type="text"> <button onclick="sendMessage()">Send Message</button> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js" ></script>
 	<script>
-	socket = io()
-	function sendMessage () {
-		socket.emit("message",document.getElementById("chat-input").value)
+	function $(id){
+		return document.getElementById(id);
 	}
+	socket = io();
+	function sendMessage () {
+		//get data
+		var name = $("user").value;
+		var input_message = $("input_message").value;
+		//new local rendered
+		selfMessage({name:name,message:input_message});
+		$("input_message").value="";	
+		$("user").setAttribute("readonly", "readonly");
+		//Execute socket
+		socket.emit("message",{name:name,message:input_message})
+		
+	}
+
+	function selfMessage(data){
+		var message_box = document.querySelector(".message_box").cloneNode(true);
+		message_box.style.display="flex";
+		message_box.classList.add("message_box_self");
+		message_box.querySelector(".autor").innerHTML=data.name;
+		message_box.querySelector(".message").innerHTML=data.message;
+		$("chat").appendChild(message_box);
+	}
+
 	socket.on("new_message",(data)=>{
-		document.getElementById("chat").innerHTML+="<br>"+data;
-	})
+		var message_box = document.querySelector(".message_box").cloneNode(true);
+		message_box.style.display="flex";
+		message_box.querySelector(".autor").innerHTML=data.name;
+		message_box.querySelector(".message").innerHTML=data.message;
+		$("chat").appendChild(message_box);
+	});
+
+	
 </script>
 </body>
 </html>

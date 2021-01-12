@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+input{
+    display: block;
+    
+}
+button,input{
+    width: 100%;
+    padding: 1rem;
+}
+
+.container{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+.chat{
+    width: 100%;
+
+}
+.message_box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: rgb(232, 240, 254);
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 1rem;
+      
+    .autor,.message{
+        width: 100%;
+    }
+    .autor{
+        color: purple;
+        font-weight: bold;
+    }
+}
+.message_box_self{
+    background-color: rgb(233, 233, 233);
+}

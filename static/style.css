@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+input {
+  display: block;
+}
+
+button, input {
+  width: 100%;
+  padding: 1rem;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chat {
+  width: 100%;
+}
+
+.message_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  background-color: #e8f0fe;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.message_box .autor, .message_box .message {
+  width: 100%;
+}
+
+.message_box .autor {
+  color: purple;
+  font-weight: bold;
+}
+
+.message_box_self {
+  background-color: #e9e9e9;
+}
+/*# sourceMappingURL=style.css.map */
