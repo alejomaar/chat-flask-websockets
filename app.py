@@ -18,6 +18,11 @@ def connect():
 def disconnect():
     print('Client disconnected')
 
+@socketio.on("typping")
+def handletypping(name):
+    emit("typpingOut",name,broadcast=True, include_self=False)
+
+
 @socketio.on("message")
 def handleMessage(message_data):
     emit("new_message",message_data,broadcast=True, include_self=False)

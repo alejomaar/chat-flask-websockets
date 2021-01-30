@@ -4,23 +4,40 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
 	<title>Document</title>
 </head>
 <body>
 
-	<div class="message_box" style="display:none">
+	<div class="chat_box" style="display:none">
 		<span class="autor"></span>
-		<span class="message"></span>
+		<span class="chat_message"></span>
 	</div>
 
-	<div class="container">
+	<div class="header">
+		<input class="name" type="text" id="user" placeholder="Usuario">
+		<span class="typping" id="typping"></sppan>
+
+	</div>
+
+	<div class="message">
+		<input class="input_message "type="text" id="input_message" placeholder="Mensaje">
+		<button onclick="sendMessage()"> <img src="\static\arrow.svg"></button>
+	</div>
+
+	<div class="chat" id ="chat">
+		
+	</div>
+	<!-- <div class="container">
 		<input type="text" id="user" placeholder="Usuario">
 		<input type="text" id="input_message" placeholder="Mensaje">
 		<button onclick="sendMessage()">Enviar</button>
+		<span id="typping"></span>
 		<div class="chat" id="chat">
 
 		</div>
-	</div>
+	</div> -->
 	
 	<!-- <div id="chat"></div>
 	<input id="chat-input" type="text"> <button onclick="sendMessage()">Send Message</button> -->
@@ -30,7 +47,55 @@
 		return document.getElementById(id);
 	}
 	socket = io();
+	init();
+
+	function emojis(){
+
+	}
+
+	function init(){
+		$("input_message").addEventListener("input",()=> {
+			socket.emit("typping",{name:$("user").value});
+		});
+		$("input_message").addEventListener("keyup",(e)=> {
+			var keyboard = e.key;
+			
+
+
+			emojis(keyboard);
+		});
+
+		function emojis(number){
+			var msg = $("input_message").value;
+			switch(number){
+
+				case "1":
+					msg= msg.replace(/1/g,"🚀");
+				break;
+				case "2":
+					msg= msg.replace(/2/g,"👉");
+				break;
+				case "3":
+					msg= msg.replace(/3/g,"👈");
+				break;
+				case "4":
+					msg= msg.replace(/4/g,"🖥️");
+				break;
+
+			}
+			$("input_message").value = msg;
+
+		}
+		//$("input_message").addEventListener("keyup",()=>{
+			
+
+		//});
+	}
+
 	function sendMessage () {
+
+		
+
 		//get data
 		var name = $("user").value;
 		var input_message = $("input_message").value;
@@ -44,23 +109,44 @@
 	}
 
 	function selfMessage(data){
-		var message_box = document.querySelector(".message_box").cloneNode(true);
+		var message_box = document.querySelector(".chat_box").cloneNode(true);
 		message_box.style.display="flex";
-		message_box.classList.add("message_box_self");
+		message_box.classList.add("chat_box_self");
 		message_box.querySelector(".autor").innerHTML=data.name;
-		message_box.querySelector(".message").innerHTML=data.message;
+		message_box.querySelector(".chat_message").innerHTML=data.message;
 		$("chat").appendChild(message_box);
 	}
 
 	socket.on("new_message",(data)=>{
-		var message_box = document.querySelector(".message_box").cloneNode(true);
+		var message_box = document.querySelector(".chat_box").cloneNode(true);
 		message_box.style.display="flex";
 		message_box.querySelector(".autor").innerHTML=data.name;
-		message_box.querySelector(".message").innerHTML=data.message;
+		message_box.querySelector(".chat_message").innerHTML=data.message;
 		$("chat").appendChild(message_box);
+
+		$("typping").innerHTML = "";
+	});
+
+	socket.on("typpingOut",(data)=>{
+		$("typping").innerHTML= data.name+" está escribiendo...";
+		//console.log(data);
 	});
 
 	
+</script>
+
+<script>
+document.addEventListener("keydown", function(e){
+	console.log(e.keyCode);
+	if(parseInt(e.keyCode)==40)
+	{
+		$("input_message").focus();
+	}
+	
+});
+//setInterval(Alejomsg(index),1500);
+
+
 </script>
 </body>
 </html>
